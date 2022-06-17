@@ -1,5 +1,5 @@
 # Superbowls
-**Updated and built upon existing Superbowl dataset from DataCamp.  Analysis of the games, tv viewership, and halftime performers.
+**Updated and built upon existing Superbowl dataset from DataCamp.  Analysis of the games, tv viewership, and halftime performers.**
 
 Added data through Superbowl 56 (2022). Created primary and foreign key relationships. Created additional tables to include all of the NFL teams with a unique identifier and a corresponding table to separate each team into their division. This will be useful in the exploratory analysis to include the teams who have never been to the superbowl and to compare the appearances, wins, losses, etc. by team and division.
 

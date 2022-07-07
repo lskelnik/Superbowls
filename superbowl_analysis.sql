@@ -24,7 +24,8 @@ CREATE OR REPLACE VIEW losses_per_team AS
 SELECT 
     super_bowl,
     date,
-    team_loser AS team,
+    team_loser AS losing_team,
+    team_winner AS winning_team,
     COUNT(team_loser) OVER(PARTITION BY team_loser) AS superbowl_losses
 FROM modern_game_details
 ORDER BY superbowl_losses DESC, team_loser ASC, date ASC;
@@ -81,7 +82,7 @@ SELECT
     team_loser,
     losing_pts
 FROM game_details
-ORDER BY number_of_rings DESC, qb_winner_1 ASC, super_bowl ASC
+ORDER BY number_of_rings DESC, qb_winner_1 ASC, super_bowl ASC;
 
 -- Compare the quarterbacks who have lost the most superbowls and show the details of those games
 
@@ -95,7 +96,7 @@ SELECT
     team_winner,
     winning_pts
 FROM game_details
-ORDER BY superbowls_lost DESC, qb_loser_1 ASC, super_bowl ASC
+ORDER BY superbowls_lost DESC, qb_loser_1 ASC, super_bowl ASC;
 
 -- Show the totals by quarterback for superbowl wins, losses, appearances, and winning percentage
 
@@ -137,7 +138,7 @@ SELECT
     team_winner,
     winning_pts
 FROM game_details
-ORDER BY superbowls_lost DESC, coach_loser ASC, super_bowl ASC
+ORDER BY superbowls_lost DESC, coach_loser ASC, super_bowl ASC;
 
 -- View the superbowl records by coach. Include total wins, losses, appearances, and winning pct.
 
@@ -151,11 +152,11 @@ SELECT
 FROM rings_per_coach
 LEFT JOIN losses_per_coach
     USING (head_coach)
-ORDER BY number_of_rings DESC, appearances DESC, winning_pct DESC
+ORDER BY number_of_rings DESC, appearances DESC, winning_pct DESC;
 
 -- Compare the superbowl wins by conference (AFC vs NFC)
 
-CREATE VIEW superbowls_by_conference AS
+CREATE OR REPLACE VIEW superbowls_by_conference AS
 SELECT 
     (SELECT
         SUM(lombardi_trophies)
@@ -207,9 +208,9 @@ SELECT
     venue,
     city,
     state,
-    COUNT(city) OVER(PARTITION BY city) AS super_bowls_hosted
+    COUNT(city) OVER(PARTITION BY venue) AS super_bowls_hosted
 FROM game_details
-ORDER BY super_bowls_hosted DESC, city ASC, super_bowl ASC;
+ORDER BY city ASC, super_bowls_hosted DESC,  super_bowl ASC;
 
 -- Create a view of the top ten rated superbowls based on average tv viewers
 
@@ -296,8 +297,16 @@ FROM game_details
 ORDER BY difference_pts ASC, combined_pts DESC
 LIMIT 10;
 
-
-
-
-
-
+CREATE OR REPLACE VIEW game_scores AS
+SELECT
+    super_bowl,
+    date,
+    team_winner,
+    winning_pts,
+    team_loser,
+    losing_pts,
+    city,
+    state,
+    venue,
+    attendance
+FROM game_details;

@@ -7,9 +7,7 @@
    Skills used: Window functions, aggregate functions, mathematical functions, coalesce functions, joins.
 */
 
--- Use window functions to show:
--- The number of superbowl wins for each team, in order from most to least
--- The number of superbowl losses for each team, in order from most to least
+-- Use window functions to show: The number of superbowl wins and losses for each team, in order from most to least
 
 CREATE OR REPLACE VIEW lombardis_per_team AS
 SELECT 
@@ -30,8 +28,7 @@ SELECT
 FROM modern_game_details
 ORDER BY superbowl_losses DESC, team_loser ASC, date ASC;
 
--- Use the previously created views for superbowl wins and losses to show 
--- the total wins, losses, and appearances for each team
+-- Use the previously created views for superbowl wins and losses to show the total wins, losses, and appearances for each team
 
 CREATE OR REPLACE VIEW totals_by_team AS
 SELECT 
